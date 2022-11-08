@@ -1,3 +1,4 @@
+const { query } = require("express");
 const pool = require("../utils/db");
 
 exports.submitUser = async (req, res, next) => {
@@ -20,4 +21,12 @@ exports.getUsers = async (req, res, next) => {
   }
   const results = await pool.query(sql);
   res.status(200).json({ results, success: 1 });
+};
+
+exports.deleteUser = async (req, res, next) => {
+  const id = req.body.id;
+  let sql = "DELETE FROM users WHERE id=?";
+  let bind = [id];
+  await pool.query(sql, bind);
+  res.status(200).json({ msg: "User deleted" });
 };
